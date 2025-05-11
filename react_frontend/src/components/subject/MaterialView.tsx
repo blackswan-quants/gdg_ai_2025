@@ -6,13 +6,9 @@ import { PlusCircle, Share2 } from 'lucide-react';
 import GraphView from './GraphView';
 import MaterialViewer from './MaterialViewer';
 
-interface MaterialViewProps {
-  showGraph: boolean;
-  onGenerateGraph: () => void;
-}
-
-const MaterialView: React.FC<MaterialViewProps> = ({ showGraph, onGenerateGraph }) => {
-  const { selectedSubject, setSelectedMaterial, selectedMaterial } = useAppContext();
+const MaterialView: React.FC = () => {
+  const { selectedSubject, setSelectedMaterial, selectedMaterial, setShowGraph, setActiveTab } =
+    useAppContext();
   const [isGeneratingGraph, setIsGeneratingGraph] = useState(false);
 
   if (!selectedSubject) return null;
@@ -28,12 +24,13 @@ const MaterialView: React.FC<MaterialViewProps> = ({ showGraph, onGenerateGraph 
     setIsGeneratingGraph(true);
     await new Promise(resolve => setTimeout(resolve, 5000));
     setIsGeneratingGraph(false);
-    onGenerateGraph();
+    setShowGraph(true);
+    setActiveTab('graph');
   };
 
   return (
     <div className="p-6">
-      {!selectedMaterial && isGeneratingGraph && (
+      {isGeneratingGraph && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <CardContainer className="p-6 max-w-md w-full">
             <h3 className="text-xl font-medium text-white mb-4">Generating Graph</h3>

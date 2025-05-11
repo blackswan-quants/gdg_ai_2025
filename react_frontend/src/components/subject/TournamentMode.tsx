@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { useAppContext } from "../../context/AppContext";
-import CardContainer from "../common/CardContainer";
-import { Trophy, Swords, Copy, ArrowLeft, Clock } from "lucide-react";
-import card1 from "../../images/card1.png";
-import card2 from "../../images/card2.png";
-import card3 from "../../images/card3.png";
-import card4 from "../../images/card4.png";
-import card5 from "../../images/card5.png";
+import React, { useState } from 'react';
+import { useAppContext } from '../../context/AppContext';
+import CardContainer from '../common/CardContainer';
+import { Trophy, Swords, Copy, ArrowLeft, Clock } from 'lucide-react';
+import card1 from '../../images/card1.png';
+import card2 from '../../images/card2.png';
+import card3 from '../../images/card3.png';
+import card4 from '../../images/card4.png';
+import card5 from '../../images/card5.png';
 
 interface LeaderboardEntry {
   name: string;
@@ -16,22 +16,22 @@ interface LeaderboardEntry {
 
 const mockLeaderboard: LeaderboardEntry[] = [
   {
-    name: "Pietro Bottan",
+    name: 'Pietro Bottan',
     score: Math.floor(Math.random() * 81) + 20,
     avatar:
-      "https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=150",
+      'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=150',
   },
   {
-    name: "Gloria Desideri",
+    name: 'Gloria Desideri',
     score: Math.floor(Math.random() * 81) + 20,
     avatar:
-      "https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?auto=compress&cs=tinysrgb&w=150",
+      'https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?auto=compress&cs=tinysrgb&w=150',
   },
   {
-    name: "Giulia Tala",
+    name: 'Giulia Tala',
     score: Math.floor(Math.random() * 81) + 20,
     avatar:
-      "https://images.pexels.com/photos/1516680/pexels-photo-1516680.jpeg?auto=compress&cs=tinysrgb&w=150",
+      'https://images.pexels.com/photos/1516680/pexels-photo-1516680.jpeg?auto=compress&cs=tinysrgb&w=150',
   },
 ].sort((a, b) => b.score - a.score);
 
@@ -43,10 +43,10 @@ const TournamentMode: React.FC<TournamentModeProps> = ({ onBack }) => {
   const [isDuelMode, setIsDuelMode] = useState(false);
   const [activeCardIndex, setActiveCardIndex] = useState<number | null>(null);
 
-  const [gamePhase, setGamePhase] = useState("setup");
+  const [gamePhase, setGamePhase] = useState('setup');
   const [selectedDeck, setSelectedDeck] = useState<string[]>([]);
-  const [currentAnswer, setCurrentAnswer] = useState("");
-  const [friendAnswer, setFriendAnswer] = useState("");
+  const [currentAnswer, setCurrentAnswer] = useState('');
+  const [friendAnswer, setFriendAnswer] = useState('');
   const [userScore, setUserScore] = useState(0);
   const [friendScore, setFriendScore] = useState(0);
   const [scores, setScores] = useState({ user: 0, friend: 0 });
@@ -55,34 +55,36 @@ const TournamentMode: React.FC<TournamentModeProps> = ({ onBack }) => {
 
   const { selectedSubject, flashcardDecks } = useAppContext();
 
-  const duelLink = "https://example.com/duel/abc123";
+  const duelLink = 'https://example.com/duel/abc123';
 
   const copyLink = () => navigator.clipboard.writeText(duelLink);
 
-  const startDuel = () => setGamePhase("selectQuestion");
+  const startDuel = () => setGamePhase('selectQuestion');
 
   const handleQuestionSelect = () => {
-    setGamePhase("waitingFriend");
+    setGamePhase('waitingFriend');
     setTimeout(() => {
-      setFriendAnswer("popipopi");
-      setGamePhase("evaluateFriend");
+      setFriendAnswer(
+        'The pupillary light reflex is controlled entirely by the spinal cord, and damage to the olfactory nerve will abolish the response.'
+      );
+      setGamePhase('evaluateFriend');
     }, 3000);
   };
 
   const evaluateFriendAnswer = (isCorrect: boolean) => {
     const newFriendScore = isCorrect ? friendScore + 1 : friendScore;
     setFriendScore(newFriendScore);
-    setScores((prev) => ({ ...prev, friend: newFriendScore }));
-    setGamePhase("answerQuestion");
+    setScores(prev => ({ ...prev, friend: newFriendScore }));
+    setGamePhase('answerQuestion');
   };
 
   const submitAnswer = () => {
-    setGamePhase("evaluating");
+    setGamePhase('evaluating');
     setTimeout(() => {
       const newUserScore = userScore + 1;
       setUserScore(newUserScore);
-      setScores((prev) => ({ ...prev, user: newUserScore }));
-      setGamePhase("results");
+      setScores(prev => ({ ...prev, user: newUserScore }));
+      setGamePhase('results');
     }, 2000);
   };
 
@@ -104,39 +106,36 @@ const TournamentMode: React.FC<TournamentModeProps> = ({ onBack }) => {
   const cardData = [
     {
       image: card1,
-      question:
-        "What does a positive Babinski sign indicate in an adult patient?",
-      answer: "4",
+      question: 'What does a positive Babinski sign indicate in an adult patient?',
+      answer: '4',
     },
     {
       image: card2,
-      question:
-        "What are the key differences between the corticospinal and extrapyramidal tracts?",
-      answer: "Paris",
+      question: 'What are the key differences between the corticospinal and extrapyramidal tracts?',
+      answer: 'Paris',
     },
     {
       image: card3,
-      question:
-        " What does an absent pupillary light reflex suggest about cranial nerve function?",
-      answer: "Star",
+      question: ' What does an absent pupillary light reflex suggest about cranial nerve function?',
+      answer: 'Star',
     },
     {
       image: card4,
       question:
         "How do Broca's aphasia and Wernicke's aphasia differ in terms of speech and comprehension?",
-      answer: "4",
+      answer: '4',
     },
     {
       image: card5,
       question:
-        "Name the 12 cranial nerves in order and state whether each is sensory, motor, or both.",
-      answer: "Water",
+        'Name the 12 cranial nerves in order and state whether each is sensory, motor, or both.',
+      answer: 'Water',
     },
   ];
 
   const renderContent = () => {
     switch (gamePhase) {
-      case "setup":
+      case 'setup':
         return (
           <div className="space-y-6">
             <div className="bg-gray-800 p-4 rounded-lg flex items-center justify-between">
@@ -153,14 +152,14 @@ const TournamentMode: React.FC<TournamentModeProps> = ({ onBack }) => {
               <div className="flex justify-between items-center mb-2">
                 <label className="text-gray-300">Select Flashcard Decks</label>
                 <button
-                  onClick={() => setSelectedDeck(["1", "2", "3"])}
+                  onClick={() => setSelectedDeck(['1', '2', '3'])}
                   className="text-sm text-blue-400 hover:text-blue-300"
                 >
                   Select All
                 </button>
               </div>
               <div className="space-y-2">
-                {["Deck 1", "Deck 2", "Deck 3"].map((deck, index) => {
+                {['Deck 1', 'Deck 2', 'Deck 3'].map((deck, index) => {
                   const id = String(index + 1);
                   return (
                     <label
@@ -171,10 +170,8 @@ const TournamentMode: React.FC<TournamentModeProps> = ({ onBack }) => {
                         type="checkbox"
                         checked={selectedDeck.includes(id)}
                         onChange={() =>
-                          setSelectedDeck((prev) =>
-                            prev.includes(id)
-                              ? prev.filter((d) => d !== id)
-                              : [...prev, id]
+                          setSelectedDeck(prev =>
+                            prev.includes(id) ? prev.filter(d => d !== id) : [...prev, id]
                           )
                         }
                         className="rounded border-gray-600"
@@ -195,12 +192,10 @@ const TournamentMode: React.FC<TournamentModeProps> = ({ onBack }) => {
           </div>
         );
 
-      case "selectQuestion":
+      case 'selectQuestion':
         return (
           <div className="space-y-6">
-            <h3 className="text-xl font-medium text-white mb-4">
-              Select a Question Card
-            </h3>
+            <h3 className="text-xl font-medium text-white mb-4">Select a Question Card</h3>
             <div className="grid grid-cols-5 gap-4">
               {cardData.map((card, i) => (
                 <div
@@ -254,7 +249,7 @@ const TournamentMode: React.FC<TournamentModeProps> = ({ onBack }) => {
           </div>
         );
 
-      case "waitingFriend":
+      case 'waitingFriend':
         return (
           <div className="flex items-center justify-center py-12">
             <div className="text-center">
@@ -266,7 +261,7 @@ const TournamentMode: React.FC<TournamentModeProps> = ({ onBack }) => {
           </div>
         );
 
-      case "evaluateFriend":
+      case 'evaluateFriend':
         return (
           <div className="space-y-6">
             <div className="bg-gray-800 p-6 rounded-lg">
@@ -290,19 +285,17 @@ const TournamentMode: React.FC<TournamentModeProps> = ({ onBack }) => {
           </div>
         );
 
-      case "answerQuestion":
+      case 'answerQuestion':
         return (
           <div className="space-y-6">
             <div className="bg-gray-800 p-6 rounded-lg">
               <h4 className="text-lg text-gray-300 mb-4">Question:</h4>
-              <p className="text-white text-xl">
-                Come si chiama il muscolo cardine della riproduzione maschile?
-              </p>
+              <p className="text-white text-xl">Is the PNS in continuity with the CNS ?</p>
             </div>
             <input
               type="text"
               value={currentAnswer}
-              onChange={(e) => setCurrentAnswer(e.target.value)}
+              onChange={e => setCurrentAnswer(e.target.value)}
               className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white"
               placeholder="Type your answer..."
             />
@@ -315,7 +308,7 @@ const TournamentMode: React.FC<TournamentModeProps> = ({ onBack }) => {
           </div>
         );
 
-      case "evaluating":
+      case 'evaluating':
         return (
           <div className="flex items-center justify-center py-12">
             <div className="text-center">
@@ -325,13 +318,11 @@ const TournamentMode: React.FC<TournamentModeProps> = ({ onBack }) => {
           </div>
         );
 
-      case "results":
+      case 'results':
         return (
           <div className="text-center space-y-6">
             <Trophy className="w-20 h-20 text-yellow-400 mx-auto" />
-            <h3 className="text-2xl font-bold text-white">
-              Congrats! You won!
-            </h3>
+            <h3 className="text-2xl font-bold text-white">Congrats! You won!</h3>
             <div className="flex justify-center space-x-8">
               <div>
                 <p className="text-gray-400">Your Score</p>
@@ -364,10 +355,8 @@ const TournamentMode: React.FC<TournamentModeProps> = ({ onBack }) => {
             <ArrowLeft className="mr-2" size={20} />
             Back to Leaderboard
           </button>
-          <CardContainer className="max-w-2xl mx-auto">
-            {renderContent()}
-          </CardContainer>
-          {gamePhase !== "setup" && gamePhase !== "results" && <ScoreDisplay />}
+          <CardContainer className="max-w-2xl mx-auto">{renderContent()}</CardContainer>
+          {gamePhase !== 'setup' && gamePhase !== 'results' && <ScoreDisplay />}
         </>
       ) : (
         <>
@@ -395,9 +384,7 @@ const TournamentMode: React.FC<TournamentModeProps> = ({ onBack }) => {
                   </div>
                   <div className="flex-grow">
                     <h4 className="text-white font-medium">{entry.name}</h4>
-                    <p className="text-gray-400 text-sm">
-                      Score: {entry.score}
-                    </p>
+                    <p className="text-gray-400 text-sm">Score: {entry.score}</p>
                   </div>
                 </div>
               </CardContainer>

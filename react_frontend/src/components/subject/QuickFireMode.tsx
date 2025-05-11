@@ -10,7 +10,7 @@ interface QuickFireModeProps {
 
 const QuickFireMode: React.FC<QuickFireModeProps> = ({ onBack }) => {
   const { selectedSubject, flashcardDecks } = useAppContext();
-  const [cardCount, setCardCount] = useState(10);
+  const [cardCount, setCardCount] = useState(2);
   const [selectedNotes, setSelectedNotes] = useState<string[]>([]);
   const [isQuizStarted, setIsQuizStarted] = useState(false);
   const [currentAnswer, setCurrentAnswer] = useState('');
@@ -22,20 +22,20 @@ const QuickFireMode: React.FC<QuickFireModeProps> = ({ onBack }) => {
 
   const questions = [
     {
-      text: 'Come si chiama il muscolo cardine della riproduzione maschile?',
-      answer: 'papa francesco',
+      text: 'How many region is the brain split into?',
+      answer: 'five',
       isAI: false,
     },
     {
-      text: 'Il cervelletto è responsabile della coordinazione motoria?',
-      answer: 'sì',
+      text: 'The nerve cell bodies of the CNS are grouped into large aggregates, known as ___',
+      answer: 'grey matter|matter grey',
       isAI: true,
     },
   ];
 
   const availableNotes =
     selectedSubject?.chapters.flatMap(chapter =>
-      chapter.materials.filter(material => material.type === 'textbook')
+      chapter.materials.filter(material => material.type === 'flashcard')
     ) || [];
 
   const toggleNote = (noteId: string) => {
@@ -57,7 +57,12 @@ const QuickFireMode: React.FC<QuickFireModeProps> = ({ onBack }) => {
 
   const checkAnswer = () => {
     const current = questions[currentQuestionIndex];
-    const isAnswerCorrect = currentAnswer.toLowerCase().trim() === current.answer.toLowerCase();
+    const acceptableAnswers = current.answer
+      .toLowerCase()
+      .split('|')
+      .map(ans => ans.trim());
+
+    const isAnswerCorrect = acceptableAnswers.includes(currentAnswer.toLowerCase().trim());
     setIsCorrect(isAnswerCorrect);
     if (current.isAI) {
       setShowSaveButton(true);
