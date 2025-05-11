@@ -1,26 +1,24 @@
-import React, { useState } from "react";
-import { useAppContext } from "../../context/AppContext";
-import CardContainer from "../common/CardContainer";
-import MaterialItem from "./MaterialItem";
-import { PlusCircle, Share2 } from "lucide-react";
-import GraphView from "./GraphView";
+import React, { useState } from 'react';
+import { useAppContext } from '../../context/AppContext';
+import CardContainer from '../common/CardContainer';
+import MaterialItem from './MaterialItem';
+import { PlusCircle, Share2 } from 'lucide-react';
+import GraphView from './GraphView';
+import MaterialViewer from './MaterialViewer';
 
 interface MaterialViewProps {
   showGraph: boolean;
   onGenerateGraph: () => void;
 }
 
-const MaterialView: React.FC<MaterialViewProps> = ({
-  showGraph,
-  onGenerateGraph,
-}) => {
-  const { selectedSubject } = useAppContext();
+const MaterialView: React.FC<MaterialViewProps> = ({ showGraph, onGenerateGraph }) => {
+  const { selectedSubject, setSelectedMaterial, selectedMaterial } = useAppContext();
   const [isGeneratingGraph, setIsGeneratingGraph] = useState(false);
 
   if (!selectedSubject) return null;
 
-  const allMaterials = selectedSubject.chapters.flatMap((chapter) =>
-    chapter.materials.map((material) => ({
+  const allMaterials = selectedSubject.chapters.flatMap(chapter =>
+    chapter.materials.map(material => ({
       ...material,
       chapterTitle: chapter.title,
     }))
@@ -28,25 +26,23 @@ const MaterialView: React.FC<MaterialViewProps> = ({
 
   const handleGenerateGraph = async () => {
     setIsGeneratingGraph(true);
-    await new Promise((resolve) => setTimeout(resolve, 5000));
+    await new Promise(resolve => setTimeout(resolve, 5000));
     setIsGeneratingGraph(false);
     onGenerateGraph();
   };
 
   return (
     <div className="p-6">
-      {isGeneratingGraph && (
+      {!selectedMaterial && isGeneratingGraph && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <CardContainer className="p-6 max-w-md w-full">
-            <h3 className="text-xl font-medium text-white mb-4">
-              Generating Graph
-            </h3>
+            <h3 className="text-xl font-medium text-white mb-4">Generating Graph</h3>
             <div className="w-full bg-gray-700 h-2 rounded-full overflow-hidden">
               <div
                 className="h-full bg-blue-500 transition-all duration-500"
                 style={{
-                  width: "100%",
-                  animation: "progress 5s linear",
+                  width: '100%',
+                  animation: 'progress 5s linear',
                 }}
               />
             </div>
@@ -69,10 +65,16 @@ const MaterialView: React.FC<MaterialViewProps> = ({
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {allMaterials.map((material) => (
-          <div key={material.id} className="relative group">
+        {allMaterials.map(material => (
+          <div
+            key={material.id}
+            className="relative group"
+            onClick={() => {
+              setSelectedMaterial(material);
+            }}
+          >
             <MaterialItem material={material} />
-            {material.type === "textbook" && (
+            {material.type === 'textbook' && (
               <button
                 onClick={handleGenerateGraph}
                 className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity bg-blue-600 hover:bg-blue-700 text-white px-2 py-0.5 rounded-lg text-xs flex items-center"
@@ -90,6 +92,7 @@ const MaterialView: React.FC<MaterialViewProps> = ({
           <p className="text-gray-400 mb-4">No materials found</p>
         </CardContainer>
       )}
+      {selectedMaterial && <MaterialViewer />}
     </div>
   );
 };

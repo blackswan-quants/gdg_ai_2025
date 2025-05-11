@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useState } from "react";
-import { Subject, User, FlashcardDeck, Material } from "../types";
-import { user, subjects, flashcardDecks } from "../data/mockData";
+import React, { createContext, useContext, useState } from 'react';
+import { Subject, User, FlashcardDeck, Material } from '../types';
+import { user, subjects, flashcardDecks } from '../data/mockData';
 
 interface AppContextType {
   currentUser: User;
@@ -9,6 +9,7 @@ interface AppContextType {
   selectedSubject: Subject | null;
   activeTab: string;
   showGraphView: boolean;
+  selectedMaterial: Material | null /* added */;
   setSelectedSubject: (subject: Subject | null) => void;
   setActiveTab: (tab: string) => void;
   setShowGraphView: (show: boolean) => void;
@@ -20,8 +21,9 @@ const defaultContextValue: AppContextType = {
   subjects: subjects,
   flashcardDecks: flashcardDecks,
   selectedSubject: null,
-  activeTab: "material",
+  activeTab: 'material',
   showGraphView: false,
+  selectedMaterial: null /* added */,
   setSelectedSubject: () => {},
   setActiveTab: () => {},
   setShowGraphView: () => {},
@@ -32,15 +34,11 @@ const AppContext = createContext<AppContextType>(defaultContextValue);
 
 export const useAppContext = () => useContext(AppContext);
 
-export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [selectedSubject, setSelectedSubject] = useState<Subject | null>(null);
-  const [activeTab, setActiveTab] = useState("material");
+  const [activeTab, setActiveTab] = useState('material');
   const [showGraphView, setShowGraphView] = useState(false);
-  const [selectedMaterial, setSelectedMaterial] = useState<Material | null>(
-    null
-  ); /* added */
+  const [selectedMaterial, setSelectedMaterial] = useState<Material | null>(null); /* added */
 
   const value = {
     currentUser: user,
