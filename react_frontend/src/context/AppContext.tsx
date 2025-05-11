@@ -8,12 +8,12 @@ interface AppContextType {
   flashcardDecks: FlashcardDeck[];
   selectedSubject: Subject | null;
   activeTab: string;
-  showGraphView: boolean;
-  selectedMaterial: Material | null /* added */;
+  showGraph: boolean;
+  selectedMaterial: Material | null;
   setSelectedSubject: (subject: Subject | null) => void;
   setActiveTab: (tab: string) => void;
-  setShowGraphView: (show: boolean) => void;
-  setSelectedMaterial: (material: Material | null) => void /* added */;
+  setShowGraph: (show: boolean) => void;
+  setSelectedMaterial: (material: Material | null) => void;
 }
 
 const defaultContextValue: AppContextType = {
@@ -22,23 +22,29 @@ const defaultContextValue: AppContextType = {
   flashcardDecks: flashcardDecks,
   selectedSubject: null,
   activeTab: 'material',
-  showGraphView: false,
-  selectedMaterial: null /* added */,
+  showGraph: false,
+  selectedMaterial: null,
   setSelectedSubject: () => {},
   setActiveTab: () => {},
-  setShowGraphView: () => {},
-  setSelectedMaterial: () => {} /* added */,
+  setShowGraph: () => {},
+  setSelectedMaterial: () => {},
 };
 
 const AppContext = createContext<AppContextType>(defaultContextValue);
 
-export const useAppContext = () => useContext(AppContext);
+export const useAppContext = () => {
+  const context = useContext(AppContext);
+  if (context === undefined) {
+    throw new Error('useAppContext must be used within an AppProvider');
+  }
+  return context;
+};
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [selectedSubject, setSelectedSubject] = useState<Subject | null>(null);
+  const [selectedMaterial, setSelectedMaterial] = useState<Material | null>(null);
   const [activeTab, setActiveTab] = useState('material');
-  const [showGraphView, setShowGraphView] = useState(false);
-  const [selectedMaterial, setSelectedMaterial] = useState<Material | null>(null); /* added */
+  const [showGraph, setShowGraph] = useState(false);
 
   const value = {
     currentUser: user,
@@ -46,12 +52,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     flashcardDecks,
     selectedSubject,
     activeTab,
-    showGraphView,
+    showGraph,
     setSelectedSubject,
     setActiveTab,
-    setShowGraphView,
-    selectedMaterial /* added */,
-    setSelectedMaterial /* added */,
+    setShowGraph,
+    selectedMaterial,
+    setSelectedMaterial,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
