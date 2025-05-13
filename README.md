@@ -26,7 +26,8 @@ Math Quest is an innovative educational platform that transforms traditional mat
 
 1. Run the server:
 ```bash
- uvicorn main:app --reload ```
+ uvicorn main:app --reload
+```
 
 
 ### Frontend Setup
