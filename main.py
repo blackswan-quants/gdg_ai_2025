@@ -69,7 +69,7 @@ all'argomento {topic}, utile per superare un ostacolo o far progredire l'avventu
 Non includere alcun testo o spiegazione al di fuori del JSON."""
 )
 app = FastAPI()
-os.environ["GOOGLE_API_KEY"] = "AIzaSyC1bXxZ4447S7p3RfupwWPjLVEIuLR3Vtg"
+os.environ["GOOGLE_API_KEY"] = "AIzaSyBds5SfsZylh1vo1irbIqDk6AdPzoz9R5c"
 
 
 llm = init_chat_model("google_genai:gemini-2.0-flash")
